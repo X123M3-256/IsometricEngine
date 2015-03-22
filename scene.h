@@ -1,7 +1,7 @@
 #ifndef SCENE_H_INCLUDED
 #define SCENE_H_INCLUDED
 #include "sprite_list.h"
-#define MAX_OBJECTS 256
+#define MAX_OBJECTS 16000
 
 typedef struct
 {
