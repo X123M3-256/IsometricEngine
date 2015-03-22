@@ -25,5 +25,6 @@ int num_surfaces;
 
 sprite_list_t sprite_list_new();
 int sprite_list_load(sprite_list_t* sprite_list,const char* filename);
+int sprite_list_add_sprite(sprite_list_t* sprite_list,int surface,int x,int y,int width,int height,int offset_x,int offset_y);
 
 #endif // SPRITE_LIST_H_INCLUDED
