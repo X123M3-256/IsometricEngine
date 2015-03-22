@@ -5,7 +5,6 @@ void scene_new(scene_t* scene,sprite_list_t* sprite_list)
 {
 scene->sprite_list=sprite_list;
 scene->num_objects=0;
-return scene;
 }
 
 void scene_add_object(scene_t* scene,int sprite,int x,int y,int z)
