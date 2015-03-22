@@ -21,10 +21,10 @@ void viewport_refresh_objects(viewport_t* viewport)
 {
 int i;
 viewport->num_objects=0;
+
     for(i=0;i<viewport->scene->num_objects;i++)
     {
-    object_t* object=viewport->scene->objects+i;
-        if(viewport_is_in_view(viewport,object))
+        if(viewport_is_in_view(viewport,viewport->scene->objects+i))
         {
         viewport->objects[viewport->num_objects]=viewport->scene->objects[i];
         viewport->num_objects++;
