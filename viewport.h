@@ -18,4 +18,7 @@ void viewport_new(viewport_t* viewport,scene_t* scene,int x,int y,int z,int widt
 void viewport_render(viewport_t* viewport,sprite_list_t* sprite_list,SDL_Surface* surface,int x,int y);
 void viewport_set_position(viewport_t* viewport,int x,int y,int z);
 void viewport_rotate(viewport_t* viewport);
+void viewport_zoom_in(viewport_t* viewport);
+void viewport_zoom_out(viewport_t* viewport);
+
 #endif // VIEWPORT_H_INCLUDED
