@@ -3,6 +3,7 @@
 sprite_list_t sprite_list_new()
 {
 sprite_list_t sprite_list;
+sprite_list.num_surfaces=0;
 sprite_list.num_sprites=0;
 return sprite_list;
 }
@@ -77,20 +78,42 @@ int x,y;
 return scaled_surface;
 }
 
-void sprite_list_load(sprite_list_t* sprite_list,const char* filename,int offset_x,int offset_y)
+int sprite_list_load(sprite_list_t* sprite_list,const char* filename)
 {
-sprite_t sprite;
-sprite.bitmap=SDL_LoadBMP(filename);
-SDL_SetColorKey(sprite.bitmap,SDL_SRCCOLORKEY,SDL_MapRGB(sprite.bitmap->format,0,0,0));
-sprite.offset_x=offset_x;
-sprite.offset_y=offset_y;
-sprite_list->sprites[0][sprite_list->num_sprites]=sprite;
+SDL_Surface* surface=SDL_LoadBMP(filename);
+SDL_SetColorKey(surface,SDL_SRCCOLORKEY,SDL_MapRGB(surface->format,0,0,0));
+
+sprite_list->surfaces[0][sprite_list->num_surfaces]=surface;
 int i;
     for(i=1;i<SCALE_LEVELS;i++)
     {
-    sprite_list->sprites[i][sprite_list->num_sprites].bitmap=scale_down(sprite_list->sprites[i-1][sprite_list->num_sprites].bitmap);
-    sprite_list->sprites[i][sprite_list->num_sprites].offset_x=sprite_list->sprites[i-1][sprite_list->num_sprites].offset_x/2;
-    sprite_list->sprites[i][sprite_list->num_sprites].offset_y=sprite_list->sprites[i-1][sprite_list->num_sprites].offset_y/2;
+    sprite_list->surfaces[i][sprite_list->num_surfaces]=scale_down(sprite_list->surfaces[i-1][sprite_list->num_surfaces]);
+    }
+sprite_list->num_surfaces++;
+return sprite_list->num_surfaces-1;
+}
+int sprite_list_add_sprite(sprite_list_t* sprite_list,int surface,int x,int y,int width,int height,int offset_x,int offset_y)
+{
+SDL_Rect rect;
+rect.x=x;
+rect.y=y;
+rect.w=width;
+rect.h=height;
+
+int i;
+    for(i=0;i<SCALE_LEVELS;i++)
+    {
+    sprite_list->sprites[i][sprite_list->num_sprites].bitmap=sprite_list->surfaces[i][surface];
+    sprite_list->sprites[i][sprite_list->num_sprites].rect=rect;
+    sprite_list->sprites[i][sprite_list->num_sprites].offset_x=offset_x;
+    sprite_list->sprites[i][sprite_list->num_sprites].offset_y=offset_y;
+    offset_x/=2;
+    offset_y/=2;
+    rect.x/=2;
+    rect.y/=2;
+    rect.w/=2;
+    rect.h/=2;
     }
 sprite_list->num_sprites++;
+return sprite_list->num_sprites-1;
 }

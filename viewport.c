@@ -11,10 +11,10 @@ return (viewport->projection[2]*x+viewport->projection[3]*y)/256+viewport->heigh
 
 int viewport_is_in_view(viewport_t* viewport,object_t* object)
 {
-sprite_t* sprite=viewport->scene->sprite_list->sprites+object->sprite;
+sprite_t* sprite=viewport->scene->sprite_list->sprites[viewport->scale]+object->sprite;
 int sprite_x=viewport_project_x(viewport,object->x-viewport->x,object->y-viewport->y)+sprite->offset_x;
 int sprite_y=viewport_project_y(viewport,object->x-viewport->x,object->y-viewport->y)-(object->z>>viewport->scale)+sprite->offset_y;
-return sprite_x+sprite->bitmap->w>0&&sprite_y+sprite->bitmap->h>0&&sprite_x<viewport->width&&sprite_y<viewport->height;
+return sprite_x+sprite->rect.w>0&&sprite_y+sprite->rect.h>0&&sprite_x<viewport->width&&sprite_y<viewport->height;
 }
 
 void viewport_refresh_objects(viewport_t* viewport)
@@ -128,10 +128,9 @@ SDL_Rect dst_rect;
     {
     object_t* object=viewport->objects+i;
     sprite_t* sprite=sprite_list->sprites[viewport->scale]+object->sprite;
-
     dst_rect.x=x+viewport_project_x(viewport,object->x-viewport->x,object->y-viewport->y)+sprite->offset_x;
     dst_rect.y=y+viewport_project_y(viewport,object->x-viewport->x,object->y-viewport->y)-(object->z>>viewport->scale)+sprite->offset_y;
-    SDL_BlitSurface(sprite->bitmap,NULL,surface,&dst_rect);
+    SDL_BlitSurface(sprite->bitmap,&(sprite->rect),surface,&dst_rect);
     }
 
 SDL_SetClipRect(surface,NULL);
